@@ -19,6 +19,8 @@ function App() {
     const [amountOfSuccess, setAmountOfSuccess] = React.useState();
     const [dividendYearEnd, setDividendYearEnd] = React.useState('');
     const [dividendYearStart, setDividendYearStart] = React.useState('');
+    const [id, setId] = React.useState('');
+    const [name, setName] = React.useState('');
     const [successRate, setSuccessRate] = React.useState();
     const [search, setSearch] = React.useState('');
 
@@ -61,7 +63,9 @@ function App() {
                         amountOfSuccess,
                         dividendYearEnd,
                         dividendYearStart,
-                        successRate} = data;
+                        successRate,
+                        id,
+                        name} = data;
                     setAllAvgCashYields(allAvgCashYields.toFixed(2));
                     setAllAvgRetroactiveYields(allAvgRetroactiveYields.toFixed(2));
                     setAmountOfDividend(amountOfDividend);
@@ -69,6 +73,8 @@ function App() {
                     setDividendYearEnd(dividendYearEnd);
                     setDividendYearStart(dividendYearStart);
                     setSuccessRate(successRate.toFixed(2));
+                    setId(id);
+                    setName(name);
                 }).catch((error) => {
                     setOpen(true);
                     setErrorMessage(error);
@@ -76,6 +82,12 @@ function App() {
             }}>確定</Button>
             <Card sx={{ minWidth: 275 }}>
                 <CardContent>
+                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                    代號: {id}
+                    </Typography>
+                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                    名稱: {name}
+                    </Typography>
                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                     填權息成功率: {successRate}%
                     </Typography>
