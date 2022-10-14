@@ -58,12 +58,11 @@ function App() {
             <Grid container 
                 direction="row"
                 justifyContent="center"
-                alignItems="center">
-                <Box sx={{
-                    height: '1000',
-                    minHeight: '1000',
-                    marginTop:25,
-                }}><TextField 
+                alignItems="center"
+                style={{ minHeight: '100vh' }}
+            >
+                <Box>
+                    <TextField 
                         id="outlined-basic" 
                         label="請輸入股票代號或名稱" 
                         variant="outlined" 
@@ -126,7 +125,8 @@ function App() {
                     歷年平均還原殖利率: {allAvgRetroactiveYields}%
                             </Typography>
                         </CardContent>
-                    </Card></Box>
+                    </Card>
+                </Box>
             </Grid>
         </div>
     );
