@@ -14,6 +14,9 @@ import Paper from '@mui/material/Paper';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Box from '@mui/material/Box';
+import InputBase from '@mui/material/InputBase';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
 
 const STOCK_API_URL = 'http://localhost:3000/stock';
 
@@ -61,44 +64,54 @@ function App() {
                 alignItems="center"
                 style={{ minHeight: '100vh' }}
             >
-                <Box>
-                    <TextField 
-                        id="outlined-basic" 
-                        label="請輸入股票代號或名稱" 
-                        variant="outlined" 
-                        value={search}
-                        onChange={handleSearchChange}
-                    />
-                    <Button variant="contained" onClick={() => {
-                        axios.get(STOCK_API_URL,{
-                            params: {
-                                search
+                <Box minWidth={275}>
+                    <Box>
+                        <InputBase
+                            fullWidth
+                            sx={{ ml: 1, flex: 1 }}
+                            placeholder="請輸入股票代號或名稱"
+                            inputProps={{ 'aria-label': '請輸入股票代號或名稱' }}
+                            value={search}
+                            onChange={handleSearchChange}
+                            endAdornment={
+                                <IconButton type="button" sx={{ p: '10px' }} aria-label="search"
+                                    onClick={() => {
+                                        axios.get(STOCK_API_URL,{
+                                            params: {
+                                                search
+                                            }
+                                        }).then(({data}) => {
+                                            const {allAvgCashYields,
+                                                allAvgRetroactiveYields,
+                                                amountOfDividend,
+                                                amountOfSuccess,
+                                                dividendYearEnd,
+                                                dividendYearStart,
+                                                successRate,
+                                                id,
+                                                name} = data;
+                                            setAllAvgCashYields(allAvgCashYields.toFixed(2));
+                                            setAllAvgRetroactiveYields(allAvgRetroactiveYields.toFixed(2));
+                                            setAmountOfDividend(amountOfDividend);
+                                            setAmountOfSuccess(amountOfSuccess);
+                                            setDividendYearEnd(dividendYearEnd);
+                                            setDividendYearStart(dividendYearStart);
+                                            setSuccessRate(successRate.toFixed(2));
+                                            setId(id);
+                                            setName(name);
+                                        }).catch((error) => {
+                                            setOpen(true);
+                                            setErrorMessage(error);
+                                        });
+                                    }}
+                                >
+                                    <SearchIcon />
+                                </IconButton>
                             }
-                        }).then(({data}) => {
-                            const {allAvgCashYields,
-                                allAvgRetroactiveYields,
-                                amountOfDividend,
-                                amountOfSuccess,
-                                dividendYearEnd,
-                                dividendYearStart,
-                                successRate,
-                                id,
-                                name} = data;
-                            setAllAvgCashYields(allAvgCashYields.toFixed(2));
-                            setAllAvgRetroactiveYields(allAvgRetroactiveYields.toFixed(2));
-                            setAmountOfDividend(amountOfDividend);
-                            setAmountOfSuccess(amountOfSuccess);
-                            setDividendYearEnd(dividendYearEnd);
-                            setDividendYearStart(dividendYearStart);
-                            setSuccessRate(successRate.toFixed(2));
-                            setId(id);
-                            setName(name);
-                        }).catch((error) => {
-                            setOpen(true);
-                            setErrorMessage(error);
-                        });
-                    }}>確定</Button>
-                    <Card sx={{ minWidth: 275 }}>
+                        />
+                        
+                    </Box>
+                    <Card>
                         <CardContent>
                             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                     代號: {id}
