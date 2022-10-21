@@ -19,6 +19,7 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import Autocomplete from '@mui/material/Autocomplete';
 import InputAdornment from '@mui/material/InputAdornment';
+import StockLogo from './stock_icon.png';
 
 const STOCK_API_URL = 'http://localhost:3000/stock';
 const STOCK_LIST_API_URL = 'http://localhost:3000/stocks';
@@ -77,6 +78,16 @@ function App() {
                 style={{ minHeight: '100vh' }}
             >
                 <Box minWidth={275}>
+                    <Grid container 
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <img src={StockLogo} style={{width:'100px',marginBottom:'20px'}} />
+                    </Grid>
+                    <Typography variant="h6" style={{fontFamily: '"Noto Sans TC", "Roboto","Helvetica","Arial",sans-serif'}} gutterBottom>
+                        權息通 - 輕鬆查詢各股票歷年除權息資料
+                    </Typography>
                     <Box>
                         <Autocomplete
                             id="combo-box-demo"
@@ -139,28 +150,28 @@ function App() {
                     </Box>
                     <Card>
                         <CardContent>
-                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                            <Typography variant="subtitle1" gutterBottom>
                     代號: {id}
                             </Typography>
-                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                            <Typography variant="subtitle1" gutterBottom>
                     名稱: {name}
                             </Typography>
-                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                            <Typography variant="subtitle1" gutterBottom>
                     填權息成功率: {successRate}%
                             </Typography>
-                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                            <Typography variant="subtitle1" gutterBottom>
                     除權息次數: {amountOfDividend}
                             </Typography>
-                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                            <Typography variant="subtitle1" gutterBottom>
                     填權息次數: {amountOfSuccess}
                             </Typography>
-                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                            <Typography variant="subtitle1" gutterBottom>
                     統計年分: {dividendYearStart} - {dividendYearEnd}
                             </Typography>
-                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                            <Typography variant="subtitle1" gutterBottom>
                     歷年平均現金殖利率: {allAvgCashYields}%
                             </Typography>
-                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                            <Typography variant="subtitle1" gutterBottom>
                     歷年平均還原殖利率: {allAvgRetroactiveYields}%
                             </Typography>
                         </CardContent>
