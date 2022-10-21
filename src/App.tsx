@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Button from '@mui/material/Button';
@@ -17,8 +17,11 @@ import Box from '@mui/material/Box';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
+import Autocomplete from '@mui/material/Autocomplete';
+import InputAdornment from '@mui/material/InputAdornment';
 
 const STOCK_API_URL = 'http://localhost:3000/stock';
+const STOCK_LIST_API_URL = 'http://localhost:3000/stocks';
 
 function App() {
     const [allAvgCashYields, setAllAvgCashYields] = React.useState();
@@ -31,6 +34,7 @@ function App() {
     const [name, setName] = React.useState('');
     const [successRate, setSuccessRate] = React.useState();
     const [search, setSearch] = React.useState('');
+    const [stocks, setStocks] = React.useState([]);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value);
@@ -49,6 +53,14 @@ function App() {
         setOpen(false);
     };
 
+    useEffect(() => {
+        axios.get(STOCK_LIST_API_URL).then(({data}) => {
+            setStocks(data);
+        }).catch((error) => {
+            setOpen(true);
+            setErrorMessage(error);
+        });
+    }, []); 
 
     return (
         <div>
@@ -66,50 +78,63 @@ function App() {
             >
                 <Box minWidth={275}>
                     <Box>
-                        <InputBase
-                            fullWidth
-                            sx={{ ml: 1, flex: 1 }}
-                            placeholder="請輸入股票代號或名稱"
-                            inputProps={{ 'aria-label': '請輸入股票代號或名稱' }}
-                            value={search}
-                            onChange={handleSearchChange}
-                            endAdornment={
-                                <IconButton type="button" sx={{ p: '10px' }} aria-label="search"
-                                    onClick={() => {
-                                        axios.get(STOCK_API_URL,{
-                                            params: {
-                                                search
-                                            }
-                                        }).then(({data}) => {
-                                            const {allAvgCashYields,
-                                                allAvgRetroactiveYields,
-                                                amountOfDividend,
-                                                amountOfSuccess,
-                                                dividendYearEnd,
-                                                dividendYearStart,
-                                                successRate,
-                                                id,
-                                                name} = data;
-                                            setAllAvgCashYields(allAvgCashYields.toFixed(2));
-                                            setAllAvgRetroactiveYields(allAvgRetroactiveYields.toFixed(2));
-                                            setAmountOfDividend(amountOfDividend);
-                                            setAmountOfSuccess(amountOfSuccess);
-                                            setDividendYearEnd(dividendYearEnd);
-                                            setDividendYearStart(dividendYearStart);
-                                            setSuccessRate(successRate.toFixed(2));
-                                            setId(id);
-                                            setName(name);
-                                        }).catch((error) => {
-                                            setOpen(true);
-                                            setErrorMessage(error);
-                                        });
-                                    }}
-                                >
-                                    <SearchIcon />
-                                </IconButton>
-                            }
+                        <Autocomplete
+                            id="combo-box-demo"
+                            options={stocks}
+                            style={{ width: 300 }}
+                            renderInput={params => {
+                                return (
+                                    <TextField
+                                        {...params}
+                                        label="Combo box"
+                                        variant="outlined"
+                                        fullWidth
+                                        InputProps={{
+                                            ...params.InputProps,
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton type="button" sx={{ p: '10px' }} aria-label="search"
+                                                        onClick={() => {
+                                                            const value = params.inputProps.value  as string;
+                                                            const [search, ...rest] = value.split(' ');
+                                                            axios.get(STOCK_API_URL,{
+                                                                params: {
+                                                                    search
+                                                                }
+                                                            }).then(({data}) => {
+                                                                const {allAvgCashYields,
+                                                                    allAvgRetroactiveYields,
+                                                                    amountOfDividend,
+                                                                    amountOfSuccess,
+                                                                    dividendYearEnd,
+                                                                    dividendYearStart,
+                                                                    successRate,
+                                                                    id,
+                                                                    name} = data;
+                                                                setAllAvgCashYields(allAvgCashYields.toFixed(2));
+                                                                setAllAvgRetroactiveYields(allAvgRetroactiveYields.toFixed(2));
+                                                                setAmountOfDividend(amountOfDividend);
+                                                                setAmountOfSuccess(amountOfSuccess);
+                                                                setDividendYearEnd(dividendYearEnd);
+                                                                setDividendYearStart(dividendYearStart);
+                                                                setSuccessRate(successRate.toFixed(2));
+                                                                setId(id);
+                                                                setName(name);
+                                                            }).catch((error) => {
+                                                                setOpen(true);
+                                                                setErrorMessage(error);
+                                                            });
+                                                        }}
+                                                    >
+                                                        <SearchIcon />
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                    />
+                                );
+                            }}
                         />
-                        
                     </Box>
                     <Card>
                         <CardContent>
