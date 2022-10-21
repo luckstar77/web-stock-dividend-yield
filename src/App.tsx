@@ -81,19 +81,20 @@ function App() {
                         <Autocomplete
                             id="combo-box-demo"
                             options={stocks}
-                            style={{ width: 300 }}
+                            disableClearable
+                            forcePopupIcon={false}
                             renderInput={params => {
                                 return (
                                     <TextField
                                         {...params}
-                                        label="Combo box"
+                                        label="請輸入股票代號或名稱"
                                         variant="outlined"
                                         fullWidth
                                         InputProps={{
                                             ...params.InputProps,
                                             endAdornment: (
                                                 <InputAdornment position="end">
-                                                    <IconButton type="button" sx={{ p: '10px' }} aria-label="search"
+                                                    <IconButton type="button" aria-label="search"
                                                         onClick={() => {
                                                             const value = params.inputProps.value  as string;
                                                             const [search, ...rest] = value.split(' ');
