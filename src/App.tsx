@@ -83,12 +83,24 @@ function App() {
                         justifyContent="center"
                         alignItems="center"
                     >
-                        <img src={StockLogo} style={{width:'100px',marginBottom:'20px'}} />
+                        <img src={StockLogo} style={{width:'100px'}} />
+                    </Grid>
+                    <Grid container 
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <Typography variant="h4" style={{
+                            fontFamily: '"Noto Sans TC", "Roboto","Helvetica","Arial",sans-serif',
+                            fontSize: '2.05rem'
+                        }} gutterBottom>
+                        權息通
+                        </Typography>
                     </Grid>
                     <Typography variant="h6" style={{fontFamily: '"Noto Sans TC", "Roboto","Helvetica","Arial",sans-serif'}} gutterBottom>
-                        權息通 - 輕鬆查詢各股票歷年除權息資料
+                        輕鬆查詢各股票歷年除權息資料
                     </Typography>
-                    <Box>
+                    <Box style={{marginTop:'16px'}}>
                         <Autocomplete
                             id="combo-box-demo"
                             options={stocks}
