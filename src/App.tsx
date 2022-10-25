@@ -21,8 +21,9 @@ import Autocomplete from '@mui/material/Autocomplete';
 import InputAdornment from '@mui/material/InputAdornment';
 import StockLogo from './stock_icon.png';
 
-const STOCK_API_URL = 'http://localhost:3000/stock';
-const STOCK_LIST_API_URL = 'http://localhost:3000/stocks';
+const API_URL = process.env.REACT_APP_API_URL;
+const STOCK_API_URL = `${API_URL}/stock`;
+const STOCK_LIST_API_URL = `${API_URL}/stocks`;
 
 function App() {
     const [allAvgCashYields, setAllAvgCashYields] = React.useState();

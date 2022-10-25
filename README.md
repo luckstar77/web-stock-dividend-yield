@@ -31,6 +31,10 @@
 
 ```
 
+## 參考技術文章
+- [在s3上架設網站](https://blog.cloudthat.com/step-by-step-guide-to-deploy-reactjs-app-on-aws-s3/)
+- [CRA自定義環境變數](https://create-react-app.dev/docs/adding-custom-environment-variables/)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
