@@ -34,6 +34,8 @@
 ## 參考技術文章
 - [在s3上架設網站](https://blog.cloudthat.com/step-by-step-guide-to-deploy-reactjs-app-on-aws-s3/)
 - [CRA自定義環境變數](https://create-react-app.dev/docs/adding-custom-environment-variables/)
+- [cloudfront連結s3權限問題](https://aws.amazon.com/tw/premiumsupport/knowledge-center/s3-website-cloudfront-error-403/)
+- [cloudfront連結s3經由https](https://www.youtube.com/watch?v=2VpsKK0nZi8)
 
 # Getting Started with Create React App
 
