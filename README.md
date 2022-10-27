@@ -36,6 +36,7 @@
 - [CRA自定義環境變數](https://create-react-app.dev/docs/adding-custom-environment-variables/)
 - [cloudfront連結s3權限問題](https://aws.amazon.com/tw/premiumsupport/knowledge-center/s3-website-cloudfront-error-403/)
 - [cloudfront連結s3經由https](https://www.youtube.com/watch?v=2VpsKK0nZi8)
+- [cloudfront連結github page](https://medium.com/@pieter.fiers/seo-git-pages-spa-with-cloudfront-696ae7c784fb)
 
 # Getting Started with Create React App
 
