@@ -14,6 +14,8 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import Autocomplete from '@mui/material/Autocomplete';
 import InputAdornment from '@mui/material/InputAdornment';
+import Button from '@mui/material/Button';
+import FacebookIcon from '@mui/icons-material/Facebook';
 import StockLogo from './stock_icon.png';
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -186,10 +188,31 @@ function App() {
                     </Card>
                 </Box>
                 <Box sx={{ position: 'absolute', bottom: 8, width: '100%' }}>
-                    <Typography variant="caption" display="block" align="center">
-                        若有任何疑問或建議，歡迎隨時透過
-                        <a href="https://www.facebook.com/profile.php?id=100057097043989" target="_blank" rel="noopener noreferrer">粉絲專頁</a>
-                        聯繫。
+                    <Typography
+                        variant="caption"
+                        component="div"
+                        align="center"
+                        sx={{
+                            color: 'text.secondary',
+                            fontSize: '0.9rem',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <span>有任何疑問或建議歡迎隨時透過</span>
+                        <Button
+                            variant="text"
+                            href="https://www.facebook.com/profile.php?id=100057097043989"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            size="small"
+                            startIcon={<FacebookIcon />}
+                            sx={{ color: '#1877F2', fontSize: '0.9rem', ml: 0.5, marginTop:'-1px' }}
+                        >
+                            粉絲專頁
+                        </Button>
+                        <span>聯繫</span>
                     </Typography>
                 </Box>
             </Grid>
