@@ -188,16 +188,21 @@ function App() {
                     </Card>
                 </Box>
                 <Box sx={{ position: 'absolute', bottom: 8, width: '100%' }}>
-                    <Typography variant="caption" display="block" align="center">
+                    <Typography
+                        variant="caption"
+                        display="block"
+                        align="center"
+                        sx={{ color: 'text.secondary', fontSize: '0.75rem' }}
+                    >
                         有任何疑問或建議歡迎隨時透過
                         <Button
-                            variant="contained"
-                            color="primary"
+                            variant="text"
                             href="https://www.facebook.com/profile.php?id=100057097043989"
                             target="_blank"
                             rel="noopener noreferrer"
                             size="small"
                             startIcon={<FacebookIcon />}
+                            sx={{ color: 'text.secondary', fontSize: '0.75rem' }}
                         >
                             粉絲專頁
                         </Button>
