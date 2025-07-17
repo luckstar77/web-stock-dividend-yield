@@ -190,11 +190,17 @@ function App() {
                 <Box sx={{ position: 'absolute', bottom: 8, width: '100%' }}>
                     <Typography
                         variant="caption"
-                        display="block"
+                        component="div"
                         align="center"
-                        sx={{ color: 'text.secondary', fontSize: '0.75rem' }}
+                        sx={{
+                            color: 'text.secondary',
+                            fontSize: '0.75rem',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
                     >
-                        有任何疑問或建議歡迎隨時透過
+                        <span>有任何疑問或建議歡迎隨時透過</span>
                         <Button
                             variant="text"
                             href="https://www.facebook.com/profile.php?id=100057097043989"
@@ -202,11 +208,11 @@ function App() {
                             rel="noopener noreferrer"
                             size="small"
                             startIcon={<FacebookIcon />}
-                            sx={{ color: 'text.secondary', fontSize: '0.75rem' }}
+                            sx={{ color: 'text.secondary', fontSize: '0.75rem', ml: 0.5 }}
                         >
                             粉絲專頁
                         </Button>
-                        聯繫
+                        <span>聯繫</span>
                     </Typography>
                 </Box>
             </Grid>
