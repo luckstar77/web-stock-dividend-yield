@@ -15,6 +15,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Autocomplete from '@mui/material/Autocomplete';
 import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
+import FacebookIcon from '@mui/icons-material/Facebook';
 import StockLogo from './stock_icon.png';
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -188,7 +189,7 @@ function App() {
                 </Box>
                 <Box sx={{ position: 'absolute', bottom: 8, width: '100%' }}>
                     <Typography variant="caption" display="block" align="center">
-                        若有任何疑問或建議，歡迎隨時透過
+                        有任何疑問或建議歡迎隨時透過
                         <Button
                             variant="contained"
                             color="primary"
@@ -196,10 +197,11 @@ function App() {
                             target="_blank"
                             rel="noopener noreferrer"
                             size="small"
+                            startIcon={<FacebookIcon />}
                         >
                             粉絲專頁
                         </Button>
-                        聯繫。
+                        聯繫
                     </Typography>
                 </Box>
             </Grid>
