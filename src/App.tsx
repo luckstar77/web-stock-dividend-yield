@@ -194,7 +194,7 @@ function App() {
                         align="center"
                         sx={{
                             color: 'text.secondary',
-                            fontSize: '0.75rem',
+                            fontSize: '0.9rem',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -208,7 +208,7 @@ function App() {
                             rel="noopener noreferrer"
                             size="small"
                             startIcon={<FacebookIcon />}
-                            sx={{ color: 'text.secondary', fontSize: '0.75rem', ml: 0.5 }}
+                            sx={{ color: '#1877F2', fontSize: '0.9rem', ml: 0.5, marginTop:'-1px' }}
                         >
                             粉絲專頁
                         </Button>
