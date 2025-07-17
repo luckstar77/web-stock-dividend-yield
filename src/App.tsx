@@ -71,7 +71,7 @@ function App() {
                 direction="row"
                 justifyContent="center"
                 alignItems="center"
-                style={{ minHeight: '100vh' }}
+                style={{ minHeight: '100vh', position: 'relative' }}
             >
                 <Box minWidth={275} maxWidth={400}>
                     <Grid container 
@@ -185,14 +185,14 @@ function App() {
                         </CardContent>
                     </Card>
                 </Box>
+                <Box sx={{ position: 'absolute', bottom: 8, width: '100%' }}>
+                    <Typography variant="caption" display="block" align="center">
+                        若有任何疑問或建議，歡迎隨時透過
+                        <a href="https://www.facebook.com/profile.php?id=100057097043989" target="_blank" rel="noopener noreferrer">粉絲專頁</a>
+                        聯繫。
+                    </Typography>
+                </Box>
             </Grid>
-            <Box mt={2}>
-                <Typography variant="caption" display="block" align="center">
-                    若有任何疑問或建議，歡迎隨時透過
-                    <a href="https://www.facebook.com/profile.php?id=100057097043989" target="_blank" rel="noopener noreferrer">粉絲專頁</a>
-                    聯繫。
-                </Typography>
-            </Box>
         </div>
     );
 }
