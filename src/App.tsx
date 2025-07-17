@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -10,11 +9,7 @@ import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 import Box from '@mui/material/Box';
-import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -72,13 +67,13 @@ function App() {
                     {errorMessage.toString()}
                 </Alert>
             </Snackbar>
-            <Grid container 
+            <Grid container
                 direction="row"
                 justifyContent="center"
                 alignItems="center"
-                style={{ minHeight: '100vh' }}
+                style={{ minHeight: '100vh', position: 'relative' }}
             >
-                <Box minWidth={275}>
+                <Box minWidth={275} maxWidth={400}>
                     <Grid container 
                         direction="row"
                         justifyContent="center"
@@ -161,7 +156,7 @@ function App() {
                             }}
                         />
                     </Box>
-                    <Card>
+                    <Card style={{marginTop:'16px'}}>
                         <CardContent>
                             <Typography variant="subtitle1" gutterBottom>
                     代號: {id}
@@ -189,6 +184,13 @@ function App() {
                             </Typography>
                         </CardContent>
                     </Card>
+                </Box>
+                <Box sx={{ position: 'absolute', bottom: 8, width: '100%' }}>
+                    <Typography variant="caption" display="block" align="center">
+                        若有任何疑問或建議，歡迎隨時透過
+                        <a href="https://www.facebook.com/profile.php?id=100057097043989" target="_blank" rel="noopener noreferrer">粉絲專頁</a>
+                        聯繫。
+                    </Typography>
                 </Box>
             </Grid>
         </div>
