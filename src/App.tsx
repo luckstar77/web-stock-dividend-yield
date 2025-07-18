@@ -163,7 +163,7 @@ function App() {
                         />
                     </Box>
                     <Card style={{marginTop:'16px'}}>
-                        <CardContent sx={{ pb: 8, '&:last-child': { pb: 8 } }}>
+                        <CardContent sx={{ py: 0, '&:last-child': { pb: 0 } }}>
                             <Typography variant="subtitle1" gutterBottom>
                     代號: {id}
                             </Typography>
