@@ -167,7 +167,7 @@ function App() {
                             sx={{
                                 pt: { xs: 0, sm: 2 },
                                 pb: { xs: 0, sm: 8 },
-                                '&:last-child': { pb: { xs: 0, sm: 8 } }
+                                '&:last-child': { pb: { xs: 0, sm: 2 } }
                             }}
                         >
                             <Typography variant="subtitle1" gutterBottom>
