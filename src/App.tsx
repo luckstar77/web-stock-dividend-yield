@@ -72,8 +72,12 @@ function App() {
             <Grid container
                 direction="row"
                 justifyContent="center"
-                alignItems="center"
-                style={{ minHeight: '100vh', position: 'relative' }}
+                sx={{
+                    minHeight: { xs: 'calc(100vh - 80px)', sm: '100vh' },
+                    position: 'relative',
+                    alignItems: { xs: 'flex-start', sm: 'center' },
+                    pt: { xs: 2, sm: 0 }
+                }}
             >
                 <Box minWidth={275} maxWidth={400}>
                     <Grid container 
