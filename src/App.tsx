@@ -16,6 +16,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
 import FacebookIcon from '@mui/icons-material/Facebook';
+import CircularProgress from '@mui/material/CircularProgress';
 import StockLogo from './stock_icon.png';
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -34,6 +35,7 @@ function App() {
     const [successRate, setSuccessRate] = React.useState();
     const [search, setSearch] = React.useState('');
     const [stocks, setStocks] = React.useState([]);
+    const [loading, setLoading] = React.useState(false);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value);
@@ -119,41 +121,48 @@ function App() {
                                             ...params.InputProps,
                                             endAdornment: (
                                                 <InputAdornment position="end">
-                                                    <IconButton type="button" aria-label="search"
-                                                        onClick={() => {
-                                                            const value = params.inputProps.value  as string;
-                                                            const [search, ...rest] = value.split(' ');
-                                                            axios.get(STOCK_API_URL,{
-                                                                params: {
-                                                                    search
-                                                                }
-                                                            }).then(({data}) => {
-                                                                const {allAvgCashYields,
-                                                                    allAvgRetroactiveYields,
-                                                                    amountOfDividend,
-                                                                    amountOfSuccess,
-                                                                    dividendYearEnd,
-                                                                    dividendYearStart,
-                                                                    successRate,
-                                                                    id,
-                                                                    name} = data;
-                                                                setAllAvgCashYields(allAvgCashYields.toFixed(2));
-                                                                setAllAvgRetroactiveYields(allAvgRetroactiveYields.toFixed(2));
-                                                                setAmountOfDividend(amountOfDividend);
-                                                                setAmountOfSuccess(amountOfSuccess);
-                                                                setDividendYearEnd(dividendYearEnd);
-                                                                setDividendYearStart(dividendYearStart);
-                                                                setSuccessRate(successRate.toFixed(2));
-                                                                setId(id);
-                                                                setName(name);
-                                                            }).catch((error) => {
-                                                                setOpen(true);
-                                                                setErrorMessage(error);
-                                                            });
-                                                        }}
-                                                    >
-                                                        <SearchIcon />
-                                                    </IconButton>
+                                                    {loading ? (
+                                                        <CircularProgress size={24} />
+                                                    ) : (
+                                                        <IconButton type="button" aria-label="search"
+                                                            onClick={() => {
+                                                                const value = params.inputProps.value  as string;
+                                                                const [search, ...rest] = value.split(' ');
+                                                                setLoading(true);
+                                                                axios.get(STOCK_API_URL,{
+                                                                    params: {
+                                                                        search
+                                                                    }
+                                                                }).then(({data}) => {
+                                                                    const {allAvgCashYields,
+                                                                        allAvgRetroactiveYields,
+                                                                        amountOfDividend,
+                                                                        amountOfSuccess,
+                                                                        dividendYearEnd,
+                                                                        dividendYearStart,
+                                                                        successRate,
+                                                                        id,
+                                                                        name} = data;
+                                                                    setAllAvgCashYields(allAvgCashYields.toFixed(2));
+                                                                    setAllAvgRetroactiveYields(allAvgRetroactiveYields.toFixed(2));
+                                                                    setAmountOfDividend(amountOfDividend);
+                                                                    setAmountOfSuccess(amountOfSuccess);
+                                                                    setDividendYearEnd(dividendYearEnd);
+                                                                    setDividendYearStart(dividendYearStart);
+                                                                    setSuccessRate(successRate.toFixed(2));
+                                                                    setId(id);
+                                                                    setName(name);
+                                                                }).catch((error) => {
+                                                                    setOpen(true);
+                                                                    setErrorMessage(error);
+                                                                }).finally(() => {
+                                                                    setLoading(false);
+                                                                });
+                                                            }}
+                                                        >
+                                                            <SearchIcon />
+                                                        </IconButton>
+                                                    )}
                                                 </InputAdornment>
                                             )
                                         }}
