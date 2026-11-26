@@ -1,0 +1,120 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    name: Lint, test and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:coverage
+      # vite reads VITE_API_URL from .env.production
+      - run: npm run build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist
+          retention-days: 7
+
+  deploy:
+    name: Deploy to S3 + CloudFront
+    needs: build
+    if: github.ref == 'refs/heads/master' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://stock.imallenlai.com/
+    concurrency:
+      group: production-web
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write # for the OIDC role (AWS_ROLE_ARN)
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION || 'ap-northeast-1' }}
+      S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+      DISTRIBUTION_ID: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+      SITE_URL: https://stock.imallenlai.com/
+    steps:
+      - name: Check the deploy settings
+        id: config
+        env:
+          HAS_ROLE: ${{ secrets.AWS_ROLE_ARN != '' }}
+          HAS_KEYS: ${{ secrets.AWS_ACCESS_KEY_ID != '' && secrets.AWS_SECRET_ACCESS_KEY != '' }}
+        run: |
+          if [ -z "$S3_BUCKET" ] || [ -z "$DISTRIBUTION_ID" ] || { [ "$HAS_ROLE" != 'true' ] && [ "$HAS_KEYS" != 'true' ]; }; then
+            echo "::notice title=Deploy skipped::Set the secrets AWS_S3_BUCKET, AWS_CLOUDFRONT_DISTRIBUTION_ID and AWS_ROLE_ARN (or AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY) to deploy. See README > CI/CD."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+          echo "auth=$([ "$HAS_ROLE" = 'true' ] && echo role || echo keys)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/download-artifact@v8
+        if: steps.config.outputs.ready == 'true'
+        with:
+          name: dist
+          path: dist
+
+      - name: AWS credentials (OIDC role)
+        if: steps.config.outputs.ready == 'true' && steps.config.outputs.auth == 'role'
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: AWS credentials (access keys)
+        if: steps.config.outputs.ready == 'true' && steps.config.outputs.auth == 'keys'
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # Hashed assets first and cached for a year; then the entry files, which browsers must always revalidate,
+      # so a visitor never gets an index.html that points at assets not uploaded yet.
+      # No --delete: old asset files stay for visitors still on the previous version.
+      - name: Upload to S3
+        if: steps.config.outputs.ready == 'true'
+        run: |
+          aws s3 sync dist/assets "s3://$S3_BUCKET/assets" --cache-control 'public,max-age=31536000,immutable'
+          aws s3 sync dist "s3://$S3_BUCKET" --exclude 'assets/*' --cache-control 'public,max-age=0,must-revalidate'
+
+      - name: Invalidate CloudFront
+        if: steps.config.outputs.ready == 'true'
+        run: |
+          id=$(aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths '/*' --query 'Invalidation.Id' --output text)
+          aws cloudfront wait invalidation-completed --distribution-id "$DISTRIBUTION_ID" --id "$id"
+
+      - name: Smoke test
+        if: steps.config.outputs.ready == 'true'
+        run: |
+          entry=$(grep -o 'assets/index-[^"]*\.js' dist/index.html | head -1)
+          for _ in 1 2 3 4 5; do
+            if curl -fsS "$SITE_URL" | grep -q "$entry"; then
+              echo "Live site serves $entry"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::$SITE_URL does not serve the new build ($entry)"
+          exit 1
