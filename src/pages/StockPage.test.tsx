@@ -3,6 +3,12 @@ import userEvent from '@testing-library/user-event';
 import { createStockDividends, createStockList } from '../test/fixtures';
 import { mockFetch, ok, renderRoute } from '../test/render';
 
+// The page is a lazy route that pulls in the chart library; load it once up front so the first test
+// does not spend its findBy timeout on the import (slow on CI runners with coverage on).
+beforeAll(async () => {
+    await import('./StockPage');
+});
+
 beforeEach(() => {
     window.localStorage.clear();
 });
