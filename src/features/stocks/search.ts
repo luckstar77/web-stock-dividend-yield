@@ -33,14 +33,30 @@ export function filterStockOptions(options: readonly StockOption[], input: strin
     return ranked.slice(0, limit).map(({ option }) => option);
 }
 
+/** The page of one stock. Ids are letters and digits today; encoding keeps any other character from breaking the route. */
+export function stockPath(idString: string): string {
+    return `/stock/${encodeURIComponent(idString)}`;
+}
+
 /**
  * Turns free text from the search box into the keyword for the API: "2330 台積電" → "2330",
- * an exact name → its id when the list knows it, anything else as typed.
+ * an id in any case or an exact name → the id as the list spells it, anything else as typed.
  */
 export function resolveKeyword(options: readonly StockOption[], input: string): string {
     const text = input.trim();
     if(text === '') return '';
     const [first] = text.split(/\s+/);
-    const match = options.find((option) => option.idString === first || option.name === text);
+    const id = first.toUpperCase();
+    const match = options.find((option) => option.idString.toUpperCase() === id || option.name === text);
     return match ? match.idString : first;
+}
+
+/**
+ * What the 查詢 button looks up: the top suggestion, as Enter would pick it, so "台積" opens 2330
+ * either way; the typed text when nothing in the list matches.
+ */
+export function pickKeyword(options: readonly StockOption[], input: string): string {
+    if(input.trim() === '') return '';
+    const [best] = filterStockOptions(options, input, 1);
+    return best ? best.idString : resolveKeyword(options, input);
 }

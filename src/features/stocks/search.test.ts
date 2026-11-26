@@ -1,5 +1,5 @@
 import { createStockList } from '../../test/fixtures';
-import { filterStockOptions, resolveKeyword } from './search';
+import { filterStockOptions, pickKeyword, resolveKeyword, stockPath } from './search';
 
 const { list } = createStockList();
 
@@ -40,8 +40,32 @@ describe('resolveKeyword', () => {
         expect(resolveKeyword(list, '中華電')).toBe('2412');
     });
 
+    it('matches ids in any case and returns them as the list spells them', () => {
+        const options = [...list, { idString: '00631L', name: '元大台灣50正2' }];
+        expect(resolveKeyword(options, '00631l')).toBe('00631L');
+    });
+
     it('passes unknown text through for the API to look up', () => {
         expect(resolveKeyword(list, '9999')).toBe('9999');
         expect(resolveKeyword(list, '   ')).toBe('');
+    });
+});
+
+describe('pickKeyword', () => {
+    it('picks the top suggestion, like Enter does', () => {
+        expect(pickKeyword(list, '台積')).toBe('2330');
+        expect(pickKeyword(list, '高股息')).toBe('0056');
+    });
+
+    it('falls back to the typed text when nothing matches', () => {
+        expect(pickKeyword(list, '9999')).toBe('9999');
+        expect(pickKeyword(list, '  ')).toBe('');
+    });
+});
+
+describe('stockPath', () => {
+    it('builds the stock page path and encodes what would break the route', () => {
+        expect(stockPath('2330')).toBe('/stock/2330');
+        expect(stockPath('a/b?c')).toBe('/stock/a%2Fb%3Fc');
     });
 });

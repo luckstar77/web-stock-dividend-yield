@@ -50,8 +50,9 @@ function EventRows({ events }: { events: DividendEventItem[] }) {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {events.map((event) => (
-                    <TableRow key={event.exDate}>
+                {events.map((event, index) => (
+                    // A stock could in theory have an ex-date in each market on the same day.
+                    <TableRow key={`${event.exDate}-${index}`}>
                         <TableCell sx={NUMERIC_CELL}>{formatDate(event.exDate)}</TableCell>
                         <TableCell sx={{ whiteSpace: 'nowrap' }}>{formatKind(event.kind)}</TableCell>
                         <TableCell align="right" sx={NUMERIC_CELL}>{formatAmount(event.preExClose)}</TableCell>

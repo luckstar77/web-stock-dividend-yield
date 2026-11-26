@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import { ReactNode } from 'react';
 import { Link as RouterLink } from 'react-router';
 import { StockOption } from '../../../api/types';
+import { stockPath } from '../search';
 
 interface StockChipsProps {
     title: string;
@@ -20,7 +21,7 @@ export default function StockChips({ title, stocks, action }: StockChipsProps) {
                 <Chip
                     key={stock.idString}
                     component={RouterLink}
-                    to={`/stock/${stock.idString}`}
+                    to={stockPath(stock.idString)}
                     clickable
                     variant="outlined"
                     label={`${stock.idString} ${stock.name}`}

@@ -108,9 +108,14 @@ jobs:
       - name: Smoke test
         if: steps.config.outputs.ready == 'true'
         run: |
-          entry=$(grep -o 'assets/index-[^"]*\.js' dist/index.html | head -1)
+          set -euo pipefail
+          entry=$(grep -o 'assets/index-[^"]*\.js' dist/index.html | head -1 || true)
+          if [ -z "$entry" ]; then
+            echo "::error::Could not find the entry script in dist/index.html; update the smoke test."
+            exit 1
+          fi
           for _ in 1 2 3 4 5; do
-            if curl -fsS "$SITE_URL" | grep -q "$entry"; then
+            if curl -fsS "$SITE_URL" | grep -qF "$entry"; then
               echo "Live site serves $entry"
               exit 0
             fi

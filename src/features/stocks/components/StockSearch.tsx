@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { StockOption } from '../../../api/types';
 import { useStockList } from '../hooks/use-stock-queries';
-import { filterStockOptions, optionLabel, resolveKeyword } from '../search';
+import { filterStockOptions, optionLabel, pickKeyword, resolveKeyword, stockPath } from '../search';
 
 interface StockSearchProps {
     size?: 'small' | 'medium';
@@ -29,7 +29,7 @@ export default function StockSearch({ size = 'medium', autoFocus = false }: Stoc
     const goTo = (keyword: string) => {
         if(keyword === '') return;
         setInputValue('');
-        navigate(`/stock/${encodeURIComponent(keyword)}`);
+        navigate(stockPath(keyword));
     };
 
     const handleChange = (value: string | StockOption | null) => {
@@ -88,7 +88,7 @@ export default function StockSearch({ size = 'medium', autoFocus = false }: Stoc
                                     <Button
                                         variant="contained"
                                         disableElevation
-                                        onClick={() => goTo(resolveKeyword(options, inputValue))}
+                                        onClick={() => goTo(pickKeyword(options, inputValue))}
                                         sx={{ borderRadius: 999, px: 3, mr: -0.5 }}
                                     >
                                         查詢

@@ -16,6 +16,7 @@ import StockSearch from '../features/stocks/components/StockSearch';
 import SummaryCards from '../features/stocks/components/SummaryCards';
 import { useRecentStocks } from '../features/stocks/hooks/use-recent-stocks';
 import { useStockDividends } from '../features/stocks/hooks/use-stock-queries';
+import { stockPath } from '../features/stocks/search';
 import { useDocumentTitle } from '../utils/use-document-title';
 
 const SKELETON_CARD_COUNT = 4;
@@ -61,7 +62,7 @@ export default function StockPage() {
         if(!stock) return;
         addRecent({ idString: stock.idString, name: stock.name });
         // A search by name ends up on the stock id, so the link to share is always the same.
-        if(stock.idString !== keyword) navigate(`/stock/${stock.idString}`, { replace: true });
+        if(stock.idString !== keyword) navigate(stockPath(stock.idString), { replace: true });
     }, [stock, keyword, addRecent, navigate]);
 
     let content;

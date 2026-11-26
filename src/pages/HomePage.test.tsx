@@ -36,6 +36,17 @@ describe('HomePage', () => {
         await waitFor(() => expect(router.state.location.pathname).toBe('/stock/9999'));
     });
 
+    it('opens the top suggestion with the 查詢 button', async () => {
+        const user = userEvent.setup();
+        const { router } = renderRoute('/');
+        await screen.findByRole('combobox', { name: '搜尋股票' });
+
+        await user.type(screen.getByRole('combobox', { name: '搜尋股票' }), '台積');
+        await user.click(screen.getByRole('button', { name: '查詢' }));
+
+        await waitFor(() => expect(router.state.location.pathname).toBe('/stock/2330'));
+    });
+
     it('links the popular stocks and the recent searches', async () => {
         window.localStorage.setItem('recent-stocks', JSON.stringify([{ idString: '2412', name: '中華電' }]));
         const user = userEvent.setup();
